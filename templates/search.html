@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}検索: {{ query }}{% endblock %}
+
+{% block content %}
+<div id="page-title-row">
+    <h1 id="page-title">検索結果{% if query %}: 「{{ query }}」{% endif %}</h1>
+</div>
+
+<div id="page-tabs">
+    <a href="#" class="active">検索結果</a>
+    <div class="tab-spacer"></div>
+</div>
+
+<div id="article-body">
+    {% if query %}
+        {% if results %}
+        <p style="color: var(--text-secondary); margin-bottom: 16px;">{{ results | length }} 件見つかりました</p>
+        {% for result in results %}
+        <div class="search-result">
+            <h3><a href="/page/{{ result.title | urlencode }}">{{ result.title }}</a></h3>
+            <div class="snippet">{{ result.snippet }}</div>
+            <div class="meta">カテゴリ: {{ result.category }}</div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p style="color: var(--text-secondary);">「{{ query }}」に一致するページが見つかりませんでした。</p>
+        <p style="margin-top: 12px;"><a href="/new" class="btn btn-primary">新しいページを作成する</a></p>
+        {% endif %}
+    {% else %}
+    <form action="/search" method="GET" style="display: flex; gap: 0; max-width: 500px;">
+        <input type="text" name="q" placeholder="検索キーワードを入力..."
+               style="flex:1; background: var(--bg-primary); border: 1px solid var(--border-color); border-right: none; color: var(--text-primary); padding: 8px 12px; font-size: 14px; outline: none;">
+        <button type="submit" class="btn">検索</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
