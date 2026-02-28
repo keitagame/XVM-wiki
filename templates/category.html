@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}カテゴリ: {{ cat }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="/">メインページ</a> › カテゴリ: {{ cat }}
+</div>
+
+<div id="page-title-row">
+    <h1 id="page-title">カテゴリ: {{ cat }}</h1>
+</div>
+
+<div id="page-tabs">
+    <a href="#" class="active">ページ一覧</a>
+    <div class="tab-spacer"></div>
+    <a href="/new">新規ページ</a>
+</div>
+
+<div id="article-body">
+    {% if cat_pages %}
+    <p style="color: var(--text-secondary); margin-bottom: 16px;">{{ cat_pages | length }} ページ</p>
+    <div class="category-list">
+        {% for title, page in cat_pages %}
+        <div class="category-item">
+            <a href="/page/{{ title | urlencode }}">{{ title }}</a>
+            <div class="cat-meta">最終更新: {{ page.last_modified }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color: var(--text-secondary);">このカテゴリにはまだページがありません。</p>
+    <a href="/new" class="btn btn-primary" style="margin-top: 12px; display: inline-block;">最初のページを作成</a>
+    {% endif %}
+</div>
+{% endblock %}
