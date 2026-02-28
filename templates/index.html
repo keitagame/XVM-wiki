@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}メインページ{% endblock %}
+
+{% block toc %}
+<a class="toc-section" href="#welcome"><span class="toc-chevron">›</span> ようこそ</a>
+<a class="toc-section" href="#categories"><span class="toc-chevron">›</span> カテゴリ</a>
+<a class="toc-section" href="#recent"><span class="toc-chevron">›</span> 最近の記事</a>
+{% endblock %}
+
+{% block content %}
+<div id="page-title-row">
+    <h1 id="page-title">エミュレーター開発者 Wiki</h1>
+</div>
+
+<div id="page-tabs">
+    <a href="#" class="active">メインページ</a>
+    <a href="/new">新規作成</a>
+    <div class="tab-spacer"></div>
+    <a href="/search">検索</a>
+</div>
+
+<div id="article-body">
+    <div class="hint-box">
+        <div class="hint-title">ヒント</div>
+        エミュレーター開発に役立つ情報を提供しています。CPU エミュレーション、JIT コンパイル、グラフィックス、デバッグなど多岐にわたります。新しいページを追加するには「新規作成」をクリックしてください。
+    </div>
+
+    <h2 id="welcome">ようこそ</h2>
+    <p>このWikiはエミュレーター開発者のための包括的なリファレンスです。CPU エミュレーション、メモリ管理、グラフィックスレンダリング、そしてデバッグツールに関する情報を提供します。</p>
+
+    <h2 id="categories">カテゴリ別記事</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin: 16px 0;">
+        {% for cat in categories %}
+        <div style="border: 1px solid var(--border-color); padding: 14px;">
+            <div style="font-weight: 600; color: var(--accent-green); margin-bottom: 8px; font-size: 14px;">
+                <a href="/category/{{ cat }}" style="color: var(--accent-green); text-decoration: none;">📂 {{ cat }}</a>
+            </div>
+            {% for title, page in pages | selectattr if page is defined %}{% endfor %}
+            <div style="font-size: 12px;">
+            {% set ns = namespace(count=0) %}
+            {% for title in pages %}
+            {% endfor %}
+            </div>
+            <a href="/category/{{ cat }}" style="font-size: 12px; color: var(--accent-blue);">→ すべて表示</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 id="recent">最近の記事</h2>
+    <div class="category-list">
+        {% for title in pages %}
+        <div class="category-item">
+            <a href="/page/{{ title | urlencode }}">{{ title }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
