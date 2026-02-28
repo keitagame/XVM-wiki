@@ -37,7 +37,9 @@
             <div style="font-weight: 600; color: var(--accent-green); margin-bottom: 8px; font-size: 14px;">
                 <a href="/category/{{ cat }}" style="color: var(--accent-green); text-decoration: none;">📂 {{ cat }}</a>
             </div>
-            {% for title, page in pages | selectattr if page is defined %}{% endfor %}
+            {% for title, page in pages.items() if page is defined %}
+
+            
             <div style="font-size: 12px;">
             {% set ns = namespace(count=0) %}
             {% for title in pages %}
