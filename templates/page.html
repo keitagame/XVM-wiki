@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block toc %}
+<div id="toc-content">
+    <a class="toc-section" href="#section1"><span class="toc-chevron">›</span> 1 概要</a>
+    <a class="toc-section" href="#section2"><span class="toc-chevron">›</span> 2 実装詳細</a>
+    <a class="toc-section" href="#section3"><span class="toc-chevron">›</span> 3 最適化</a>
+    <a class="toc-section" href="#section4">4 参照</a>
+</div>
+{% endblock %}
+
+{% block right_sidebar %}
+<div id="sidebar-right">
+    <div class="sr-header">
+        <span>関連記事</span>
+    </div>
+    {% for rel in related %}
+    <a href="/page/{{ rel | urlencode }}">{{ rel }}</a>
+    {% endfor %}
+    {% if not related %}
+    <div style="padding: 8px 12px; color: var(--text-muted); font-size: 12px;">関連記事なし</div>
+    {% endif %}
+
+    <div style="margin-top: 16px; border-top: 1px solid var(--border-color);">
+        <div class="sr-header" style="padding-top: 12px;">
+            <span>表示</span>
+        </div>
+        <div class="sr-section">テキスト</div>
+        <div class="sr-radio-group">
+            <label class="sr-radio-label"><input type="radio" name="text-size" value="small" checked> 小</label>
+            <label class="sr-radio-label"><input type="radio" name="text-size" value="normal"> 標準</label>
+            <label class="sr-radio-label"><input type="radio" name="text-size" value="large"> 大</label>
+        </div>
+        <div class="sr-section" style="margin-top:8px;">幅</div>
+        <div class="sr-radio-group">
+            <label class="sr-radio-label"><input type="radio" name="width" value="standard" checked> 標準</label>
+            <label class="sr-radio-label"><input type="radio" name="width" value="wide"> 広め</label>
+        </div>
+        <div class="sr-section" style="margin-top:8px;">色 (ベータ)</div>
+        <div class="sr-radio-group">
+            <label class="sr-radio-label"><input type="radio" name="color" value="auto"> 自動</label>
+            <label class="sr-radio-label"><input type="radio" name="color" value="light"> ライト</label>
+            <label class="sr-radio-label"><input type="radio" name="color" value="dark" checked> ダーク</label>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="/">メインページ</a> › 
+    <a href="/category/{{ page.category }}">{{ page.category }}</a> › 
+    {{ page.title }}
+</div>
+
+<div id="page-title-row">
+    <h1 id="page-title">{{ page.title }}</h1>
+    <div class="lang-info">
+        <span>🌐</span>
+        <span>カテゴリ: {{ page.category }}</span>
+    </div>
+</div>
+
+<div id="page-tabs">
+    <a href="#" class="active">ページ</a>
+    <a href="#">議論</a>
+    <div class="tab-spacer"></div>
+    <a href="#">閲覧</a>
+    <a href="/edit/{{ page.title | urlencode }}">ソースを閲覧</a>
+    <a href="#">履歴を表示</a>
+    <a href="#" class="tab-tool">ツール ▾</a>
+</div>
+
+<div id="article-body">
+    {{ content_html | safe }}
+</div>
+
+<div style="margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; gap: 12px; align-items: center;">
+    <a href="/edit/{{ page.title | urlencode }}" class="btn btn-primary">✏ ページを編集</a>
+    <span style="color: var(--text-muted); font-size: 12px;">
+        最終更新: {{ page.last_modified }} | 
+        作成者: {{ page.author }}
+    </span>
+</div>
+{% endblock %}
