@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{% if page %}{{ title }}を編集{% else %}新規ページ{% endif %}{% endblock %}
+
+{% block content %}
+<div id="page-title-row">
+    <h1 id="page-title">{% if page and title %}「{{ title }}」を編集{% else %}新規ページ作成{% endif %}</h1>
+</div>
+
+<div id="page-tabs">
+    {% if title %}
+    <a href="/page/{{ title | urlencode }}">← ページに戻る</a>
+    {% endif %}
+    <a href="#" class="active">編集</a>
+    <div class="tab-spacer"></div>
+</div>
+
+<div class="edit-form">
+    <form method="POST">
+        {% if not page or not title %}
+        <div class="form-group">
+            <label class="form-label">ページタイトル</label>
+            <input type="text" name="title" placeholder="ページのタイトルを入力..." required value="{{ title or '' }}">
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="form-label">カテゴリ</label>
+            <select name="category">
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if page and page.category == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">内容 (Markdown)</label>
+            <textarea name="content" spellcheck="false">{{ page.content if page else '' }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <button type="submit" class="btn btn-primary">💾 保存</button>
+            {% if title %}
+            <a href="/page/{{ title | urlencode }}" class="btn">キャンセル</a>
+            {% else %}
+            <a href="/" class="btn">キャンセル</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<div style="margin-top: 20px; padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--border-color);">
+    <div style="font-weight: 600; margin-bottom: 8px; font-size: 13px; color: var(--accent-green);">Markdown ガイド</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--text-secondary);">
+        <div><code>## 見出し</code> — H2見出し</div>
+        <div><code>### 見出し</code> — H3見出し</div>
+        <div><code>**太字**</code> — <strong>太字</strong></div>
+        <div><code>*斜体*</code> — <em>斜体</em></div>
+        <div><code>`コード`</code> — インラインコード</div>
+        <div><code>- リスト</code> — 箇条書き</div>
+        <div><code>```lang ... ```</code> — コードブロック</div>
+        <div><code>[テキスト](/パス)</code> — リンク</div>
+    </div>
+</div>
+{% endblock %}
